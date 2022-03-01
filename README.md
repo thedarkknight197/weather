@@ -1,12 +1,14 @@
-# weather
+# Weather
 
 A new Weather app.
-
-![Wireframe](/assets/images/repo/wireframe.png "Wireframe Weather App")
-
 
 ## Getting Started
 
 To run your app from source code run in command line:
 
 `flutter run`
+
+![Wireframe](/assets/images/repo/wireframe.png "Wireframe Weather App")
+
+![Screen 1](/assets/images/repo/1.png "Screen 1")
+![Screen 2](/assets/images/repo/2.png "Screen 2")
