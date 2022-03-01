@@ -2,7 +2,8 @@
 
 A new Weather app.
 
-(/assets/images/repo/wireframe.png "Wireframe Weather App")
+![Wireframe](/assets/images/repo/wireframe.png "Wireframe Weather App")
+
 
 ## Getting Started
 
