@@ -1,15 +1,29 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:weather/models/City/City.dart';
 import 'package:weather/models/MeteoData/MeteoData.dart';
+import 'package:weather/provider/PositionProvider/index.dart';
+import 'package:weather/provider/UnitProvider/index.dart';
 import 'package:weather/utilities/constants.dart';
 
 class RequestController {
+  final BuildContext context;
+  RequestController({required this.context});
+
   Future<Map<String, dynamic>?> get temperature async {
-    const String getParams =
-        // "?lat=4.210484&lon=101.975766&appid=$APP_ID&units=metric&lang=it";
-        "?lat=19.0760&lon=72.8777&appid=$APP_ID&units=metric&lang=it";
+    Position currentLocation =
+        Provider.of<PositionProvider>(context).currentLocation;
+    UnitProvider currentUnit = Provider.of<UnitProvider>(context);
+    String getParams = "?"
+        "lat=${currentLocation.latitude}"
+        "&lon=${currentLocation.longitude}"
+        "&appid=$APP_ID"
+        "&units=$currentUnit"
+        "&lang=it";
     Uri url = Uri.parse(BASE_URL + getParams);
     http.Response response = await http.get(url);
     if (response.statusCode != 200) {

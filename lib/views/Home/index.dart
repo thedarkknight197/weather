@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
     Temperature currentUnit = Provider.of<UnitProvider>(context).currentUnit;
 
     Future<Map<String, dynamic>?> loadData() async {
-      return RequestController().temperature;
+      return RequestController(context: context).temperature;
     }
 
     List<MeteoData> filterNextDays(List<MeteoData> meteoData) {

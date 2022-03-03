@@ -6,6 +6,11 @@ class UnitProvider extends ChangeNotifier {
 
   Temperature get currentUnit => _currentTemperature;
 
+  @override
+  String toString() {
+    return _currentTemperature.apiValue();
+  }
+
   set currentUnit(Temperature newUnit) {
     _currentTemperature = newUnit;
     notifyListeners();
