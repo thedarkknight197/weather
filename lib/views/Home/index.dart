@@ -74,6 +74,7 @@ class HomePage extends StatelessWidget {
                   DaySelector index =
                       Provider.of<DaySelector>(context, listen: true);
                   List<MeteoData> listDates = filterNextDays(meteoData);
+
                   return SingleChildScrollView(
                     child: Column(
                       children: [
@@ -84,8 +85,10 @@ class HomePage extends StatelessWidget {
                         ),
                         MyRow(
                             child: Image.asset(
-                                meteoData.first.weather.first
-                                    .image(meteoData.first.hour),
+                                meteoData.first.weather.first.image(
+                                    meteoData.first.hour,
+                                    myCity.currentLocation.sunriseHour,
+                                    myCity.currentLocation.sunsetHour),
                                 height: 95)),
                         MyRow(
                           child: Text(
@@ -108,8 +111,7 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         DailyPrevisions(
-                          children: listDates,
-                        ),
+                            children: listDates, city: myCity.currentLocation),
                         MyRow(
                           child: Padding(
                             padding:
@@ -125,8 +127,10 @@ class HomePage extends StatelessWidget {
                                       listDates[index.currentIndex].day)
                                   .map(
                                     (e) => HourContainer(
-                                        currentUnit: currentUnit,
-                                        data: e.value),
+                                      currentUnit: currentUnit,
+                                      data: e.value,
+                                      city: myCity.currentLocation,
+                                    ),
                                   )
                                   .toList(),
                             ),

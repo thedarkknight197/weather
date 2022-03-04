@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/Layout/default.dart';
@@ -8,6 +7,7 @@ import 'package:weather/provider/UnitProvider/index.dart';
 import 'package:weather/utilities/Temperature/index.dart';
 import 'package:weather/views/Setting/ChangeTheme.dart';
 import 'package:weather/views/Setting/ChangeUnits.dart';
+import 'package:weather/types/Themes/index.dart';
 
 class SettingPage extends StatefulWidget {
   static const String id = "/settings";

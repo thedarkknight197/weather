@@ -27,6 +27,7 @@ class RequestController {
     Uri url = Uri.parse(BASE_URL + getParams);
     http.Response response = await http.get(url);
     if (response.statusCode != 200) {
+      return Future.error("Failed calling server");
     } else {
       try {
         Map<String, dynamic> body = jsonDecode(response.body);
@@ -35,7 +36,7 @@ class RequestController {
         City myLocation = City.fromJson(body['city']);
         return {'meteo': meteo, 'city': myLocation};
       } catch (e) {
-        print(e);
+        return Future.error(e);
       }
     }
   }

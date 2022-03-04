@@ -1,4 +1,4 @@
-enum Units { Celsius, Fahrenheit }
+import 'package:weather/types/Units/index.dart';
 
 class Temperature {
   final Units unit;

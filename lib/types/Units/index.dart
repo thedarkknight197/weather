@@ -1,0 +1,1 @@
+enum Units { Celsius, Fahrenheit }

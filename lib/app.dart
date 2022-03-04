@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weather/controllers/InitializeController/index.dart';
+import 'package:weather/models/LoadSettingsData/index.dart';
 import 'package:weather/provider/PositionProvider/index.dart';
+import 'package:weather/provider/UnitProvider/index.dart';
 import 'package:weather/views/Error/index.dart';
 import 'package:weather/views/Home/index.dart';
 import 'package:weather/views/Loading/index.dart';
@@ -16,22 +18,26 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final Future _initFuture = InitializeController.initialize();
+  Future<LoadSettings> _initFuture(context) =>
+      InitializeController.initialize(context);
 
   @override
   Widget build(BuildContext context) {
-    // print(Provider.of<ThemeProvider>(context).activeTheme);
+    ThemeProvider theme = Provider.of<ThemeProvider>(context, listen: true);
+
     return MaterialApp(
       title: 'Weather App',
       debugShowCheckedModeBanner: false,
-      theme: Provider.of<ThemeProvider>(context).isLightTheme
-          ? Provider.of<ThemeProvider>(context).lightThemeData
-          : Provider.of<ThemeProvider>(context).darkThemeData,
-      // home: const HomePage(title: 'Weather App'),
+      theme: theme.isLightTheme ? theme.lightThemeData : theme.darkThemeData,
       home: FutureBuilder(
-          future: _initFuture.then((value) =>
-              Provider.of<PositionProvider>(context, listen: false)
-                  .currentLocation = value),
+          future: _initFuture(context).then((LoadSettings value) {
+            Provider.of<PositionProvider>(context, listen: false)
+                .currentLocation = value.position;
+            Provider.of<ThemeProvider>(context, listen: false).activeTheme =
+                value.theme;
+            // Provider.of<UnitProvider>(context, listen: false).currentUnit =
+            //     value.unit;
+          }),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {

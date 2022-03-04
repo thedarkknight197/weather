@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather/models/City/City.dart';
 import 'package:weather/models/MeteoData/MeteoData.dart';
 import 'package:weather/provider/ThemeProvider/index.dart';
 import 'package:weather/utilities/ColorSchema/index.dart';
@@ -8,12 +9,16 @@ import 'package:weather/utilities/Temperature/index.dart';
 class HourContainer extends StatelessWidget {
   final MeteoData data;
   final Temperature currentUnit;
-  const HourContainer({Key? key, required this.data, required this.currentUnit})
+  final City city;
+  const HourContainer(
+      {Key? key,
+      required this.data,
+      required this.currentUnit,
+      required this.city})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int timestamp = data.timestamp;
     double temp = data.temp;
     return Container(
       height: 125,
@@ -39,15 +44,38 @@ class HourContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                    "${data.hour < 10 ? '0${data.hour}' : data.hour}:${data.minutes < 10 ? '0${data.minutes}' : data.minutes} "),
+                    "${data.hour < 10 ? '0${data.hour}' : data.hour}"
+                    ":"
+                    "${data.minutes < 10 ? '0${data.minutes}' : data.minutes} ",
+                    style: const TextStyle(color: Colors.white)),
               ],
             ),
           ),
-          Text(temp.toString() + " $currentUnit"),
+          Text(
+            temp.toInt().toString() + "$currentUnit",
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+            ),
+          ),
           Positioned(
             right: 0,
-            child: Image.asset(data.weather[0].image(data.hour), height: 75),
+            child: Image.asset(
+              data.weather[0].image(
+                data.hour,
+                city.sunsetHour,
+                city.sunriseHour,
+              ),
+              height: 50,
+            ),
           ),
+          // Positioned(
+          //   right: 0,
+          //   bottom: 0,
+          //   child: Text(data.weather[0].description +
+          //       data.weather[0].id.toString() +
+          //       data.weather[0].main),
+          // ),
         ],
       ),
     );

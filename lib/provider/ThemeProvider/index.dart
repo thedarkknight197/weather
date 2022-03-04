@@ -1,106 +1,54 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:weather/utilities/ColorSchema/index.dart';
-
-enum Themes { lightTheme, darkTheme }
+import 'package:weather/utilities/ColorSchema/DarkTheme.dart';
+import 'package:weather/utilities/ColorSchema/LightTheme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather/types/Themes/index.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  Themes activeTheme = Themes.lightTheme;
-  // bool get lightTheme => _lightTheme;
+  late Themes activeTheme = Themes.darkTheme;
 
   bool get isLightTheme => activeTheme == Themes.lightTheme;
   bool get isDarkTheme => activeTheme == Themes.darkTheme;
 
+  void switchTheme(Themes theme) {
+    setSharedPreferencesTheme(theme).then((value) {
+      activeTheme =
+          theme == Themes.lightTheme ? Themes.lightTheme : Themes.darkTheme;
+      notifyListeners();
+    });
+  }
+
   set setTheme(Themes theme) {
     switch (theme) {
       case Themes.lightTheme:
-        activeTheme = Themes.lightTheme;
+        switchTheme(Themes.lightTheme);
         break;
       case Themes.darkTheme:
-        activeTheme = Themes.darkTheme;
+        switchTheme(Themes.darkTheme);
         break;
       default:
-        activeTheme = Themes.lightTheme;
+        switchTheme(Themes.lightTheme);
         break;
     }
-    notifyListeners();
   }
 
-  ThemeData get lightThemeData => ThemeData(
-        primaryColor: ColorSchema.azure,
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.transparent,
-        appBarTheme: AppBarTheme(
-          color: Colors.transparent,
-          elevation: 0,
-          titleTextStyle: TextStyle(
-            fontSize: 36.0,
-            color: ColorSchema.mulledWine,
-          ),
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          iconTheme: const IconThemeData(
-            color: Colors.white,
-          ),
-        ),
-        bottomSheetTheme:
-            const BottomSheetThemeData(backgroundColor: Colors.transparent),
-        textTheme: TextTheme(
-          headline1: TextStyle(
-            fontSize: 72.0,
-            color: ColorSchema.mulledWine,
-            fontWeight: FontWeight.bold,
-          ),
-          headline3: TextStyle(
-            color: ColorSchema.mulledWine,
-          ),
-          headline6: const TextStyle(
-            fontSize: 36.0,
-            // fontStyle: FontStyle.italic,
-          ),
-          bodyText2: TextStyle(
-            fontSize: 16.0,
-            color: ColorSchema.mulledWine,
-          ),
-        ),
-      );
+  Future get sharedPreferencesTheme async {
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    return await _prefs.then((SharedPreferences prefs) {
+      String data = prefs.getString("theme") ?? "dark";
+      return data == "light" ? Themes.lightTheme : Themes.darkTheme;
+    });
+  }
 
-  ThemeData get darkThemeData => ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: ColorSchema.mulledWine,
-        scaffoldBackgroundColor: Colors.transparent,
-        appBarTheme: const AppBarTheme(
-          color: Colors.transparent,
-          elevation: 0,
-          titleTextStyle: TextStyle(
-            fontSize: 36.0,
-          ),
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          ),
-        ),
-        bottomSheetTheme:
-            const BottomSheetThemeData(backgroundColor: Colors.transparent),
-        textTheme: const TextTheme(
-          headline1: TextStyle(
-            fontSize: 72.0,
-            fontWeight: FontWeight.bold,
-          ),
-          headline3: TextStyle(
-            color: Colors.white,
-          ),
-          headline6: TextStyle(
-            fontSize: 36.0,
-            // fontStyle: FontStyle.italic,
-            fontFamily: 'Hind',
-          ),
-          bodyText2: TextStyle(
-            fontSize: 16.0,
-            color: Colors.white,
-            fontFamily: 'Hind',
-          ),
-        ),
-      );
+  Future setSharedPreferencesTheme(Themes newTheme) async {
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    return await _prefs.then((SharedPreferences prefs) {
+      return prefs.setString(
+          "theme", newTheme == Themes.lightTheme ? "light" : "dark");
+    });
+  }
+
+  ThemeData get lightThemeData => LightTheme;
+
+  ThemeData get darkThemeData => DarkTheme;
 }

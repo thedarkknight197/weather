@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Coord {
   final double lat;
   final double lon;
@@ -21,16 +23,25 @@ class City {
   final Coord coord;
   final String country;
   final int sunrise;
+  late int sunriseHour;
   final int sunset;
+  late int sunsetHour;
 
-  const City({
+  City({
     required this.id,
     required this.name,
     required this.coord,
     required this.country,
     required this.sunrise,
     required this.sunset,
-  });
+  }) {
+    DateTime sunriseFromMilliseconds =
+        DateTime.fromMillisecondsSinceEpoch(sunrise * 1000);
+    sunriseHour = int.parse(DateFormat('H').format(sunriseFromMilliseconds));
+    DateTime sunsetFromMilliseconds =
+        DateTime.fromMillisecondsSinceEpoch(sunset * 1000);
+    sunsetHour = int.parse(DateFormat('H').format(sunsetFromMilliseconds));
+  }
 
   factory City.fromJson(Map<String, dynamic> json) {
     Coord coord = Coord.fromJson(json['coord']);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/components/UI/MyRow/MyRow.dart';
+import 'package:weather/models/City/City.dart';
 import 'package:weather/models/MeteoData/MeteoData.dart';
 import 'package:weather/provider/DaySelector/index.dart';
 import 'package:weather/provider/UnitProvider/index.dart';
@@ -9,7 +10,9 @@ import 'package:weather/utilities/Temperature/index.dart';
 
 class DailyPrevisions extends StatelessWidget {
   final List<MeteoData> children;
-  const DailyPrevisions({Key? key, required this.children}) : super(key: key);
+  final City city;
+  const DailyPrevisions({Key? key, required this.children, required this.city})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +53,14 @@ class DailyPrevisions extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.centerLeft,
                         children: [
-                          Image.asset(e.value.weather.first.image(e.value.hour),
-                              height: 50),
+                          Image.asset(
+                            e.value.weather.first.image(
+                              e.value.hour,
+                              city.sunriseHour,
+                              city.sunsetHour,
+                            ),
+                            height: 50,
+                          ),
                           Positioned(
                             right: 0,
                             child: Column(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/provider/ThemeProvider/index.dart';
 import 'package:weather/provider/UnitProvider/index.dart';
+import 'package:weather/types/Units/index.dart';
 import 'package:weather/utilities/ColorSchema/index.dart';
 import 'package:weather/utilities/Temperature/index.dart';
 
@@ -50,8 +51,8 @@ Future<void> changeUnits(BuildContext context) {
           }
         },
         children: [
-          Text(Temperature.CELSIUS, style: style),
-          Text(Temperature.FAHRENHEIT, style: style),
+          Text("°${Temperature.CELSIUS}", style: style),
+          Text("°${Temperature.FAHRENHEIT}", style: style),
         ],
       ),
     ),
