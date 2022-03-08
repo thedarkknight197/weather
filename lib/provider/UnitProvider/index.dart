@@ -36,7 +36,6 @@ class UnitProvider extends ChangeNotifier {
       _currentTemperature = newTemperature;
       notifyListeners();
     });
-    // _currentTemperature = newTemperature;
   }
 
   set currentUnit(Temperature newUnit) {
