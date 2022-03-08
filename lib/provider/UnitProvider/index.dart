@@ -26,7 +26,6 @@ class UnitProvider extends ChangeNotifier {
 
   Future setSharedPreferencesUnits(Temperature unit) async {
     final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-    _prefs.then((value) => print(value.getString("units")));
     return await _prefs.then((SharedPreferences prefs) {
       return prefs.setString("units", unit.toString());
     });
