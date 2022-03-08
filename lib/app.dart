@@ -35,8 +35,8 @@ class _MyAppState extends State<MyApp> {
                 .currentLocation = value.position;
             Provider.of<ThemeProvider>(context, listen: false).activeTheme =
                 value.theme;
-            // Provider.of<UnitProvider>(context, listen: false).currentUnit =
-            //     value.unit;
+            Provider.of<UnitProvider>(context, listen: false).currentUnit =
+                value.unit;
           }),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather/types/Units/index.dart';
 import 'package:weather/utilities/Temperature/index.dart';
 
 class UnitProvider extends ChangeNotifier {
@@ -12,29 +13,31 @@ class UnitProvider extends ChangeNotifier {
     return _currentTemperature.apiValue();
   }
 
-  // Future get sharedPreferencesUnits async {
-  //   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  //   return await _prefs.then((SharedPreferences prefs) {
-  //     prefs.getString("units");
-  //     String data = prefs.getString("units") ?? Temperature.CELSIUS;
-  //     return data == Temperature.CELSIUS
-  //         ? Temperature(unit: Units.Celsius)
-  //         : Temperature(unit: Units.Fahrenheit);
-  //   });
-  // }
+  Future get sharedPreferencesUnits async {
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    return await _prefs.then((SharedPreferences prefs) {
+      prefs.getString("units");
+      String data = prefs.getString("units") ?? Temperature.CELSIUS;
+      return data == Temperature.CELSIUS
+          ? Temperature(unit: Units.Celsius)
+          : Temperature(unit: Units.Fahrenheit);
+    });
+  }
 
-  // Future setSharedPreferencesUnits(Temperature unit) async {
-  //   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  //   return await _prefs.then((SharedPreferences prefs) {
-  //     return prefs.setString("units", unit.toString());
-  //   });
-  // }
+  Future setSharedPreferencesUnits(Temperature unit) async {
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((value) => print(value.getString("units")));
+    return await _prefs.then((SharedPreferences prefs) {
+      return prefs.setString("units", unit.toString());
+    });
+  }
 
   void switchUnits(Temperature newTemperature) {
-    // setSharedPreferencesUnits(newTemperature)
-    //     .then((value) => currentUnit = newTemperature);
-    _currentTemperature = newTemperature;
-    notifyListeners();
+    setSharedPreferencesUnits(newTemperature).then((value) {
+      _currentTemperature = newTemperature;
+      notifyListeners();
+    });
+    // _currentTemperature = newTemperature;
   }
 
   set currentUnit(Temperature newUnit) {

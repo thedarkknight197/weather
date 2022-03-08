@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:weather/controllers/PositionController/index.dart';
 import 'package:weather/models/LoadSettingsData/index.dart';
 import 'package:weather/provider/ThemeProvider/index.dart';
+import 'package:weather/provider/UnitProvider/index.dart';
 import 'package:weather/types/Themes/index.dart';
+import 'package:weather/utilities/Temperature/index.dart';
 
 class InitializeController {
   static Future<LoadSettings> initialize(BuildContext context) async {
@@ -21,12 +23,9 @@ class InitializeController {
   static _loadSettings(BuildContext context) async {
     Themes theme = await Provider.of<ThemeProvider>(context, listen: false)
         .sharedPreferencesTheme;
-    // Temperature units = await Provider.of<UnitProvider>(context, listen: false)
-    //     .sharedPreferencesUnits;
+    Temperature units = await Provider.of<UnitProvider>(context, listen: false)
+        .sharedPreferencesUnits;
     Position position = await PositionController().determinePosition();
-    return LoadSettings(
-      theme: theme, position: position,
-      // unit: units
-    );
+    return LoadSettings(theme: theme, position: position, unit: units);
   }
 }
